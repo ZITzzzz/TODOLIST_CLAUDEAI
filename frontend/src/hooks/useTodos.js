@@ -22,8 +22,8 @@ export function useTodos() {
     fetchTodos();
   }, [fetchTodos]);
 
-  async function addTodo(title) {
-    const todo = await todosApi.create(title);
+  async function addTodo(title, opts = {}) {
+    const todo = await todosApi.create(title, opts);
     setTodos((prev) => [todo, ...prev]);
   }
 

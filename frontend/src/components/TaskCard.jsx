@@ -1,5 +1,20 @@
+const priorityColors = {
+  extreme: '#f21e1e',
+  moderate: '#42ade2',
+  low: '#22c55e',
+};
+
+const priorityLabels = {
+  extreme: 'Extreme',
+  moderate: 'Moderate',
+  low: 'Low',
+};
+
 export default function TaskCard({ todo, onToggle, onDelete, isCompleted = false }) {
   const createdDate = new Date(todo.createdAt).toLocaleDateString('en-GB');
+  const priority = todo.priority || 'moderate';
+  const statusColor = isCompleted ? '#05a301' : '#f21e1e';
+  const statusLabel = isCompleted ? 'Completed' : 'Not Started';
 
   return (
     <div className="border border-[#a1a3ab]/30 rounded-2xl p-4 bg-white relative group">
@@ -22,7 +37,7 @@ export default function TaskCard({ todo, onToggle, onDelete, isCompleted = false
         <button
           onClick={onToggle}
           title={isCompleted ? 'Mark as pending' : 'Mark as done'}
-          className="mt-0.5 w-3 h-3 rounded-full border-2 shrink-0 transition-colors"
+          className="mt-1 w-3 h-3 rounded-full border-2 shrink-0 transition-colors"
           style={{
             borderColor: isCompleted ? '#22c55e' : '#a1a3ab',
             backgroundColor: isCompleted ? '#22c55e' : 'transparent',
@@ -38,17 +53,24 @@ export default function TaskCard({ todo, onToggle, onDelete, isCompleted = false
             {todo.title}
           </p>
 
+          {todo.description && (
+            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{todo.description}</p>
+          )}
+
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500">
             <span>
-              Status:{' '}
-              <span
-                className="font-medium"
-                style={{ color: isCompleted ? '#05a301' : '#f21e1e' }}
-              >
-                {isCompleted ? 'Completed' : 'Not Started'}
+              Priority:{' '}
+              <span className="font-medium" style={{ color: priorityColors[priority] }}>
+                {priorityLabels[priority]}
               </span>
             </span>
-            <span>Created on: {createdDate}</span>
+            <span>
+              Status:{' '}
+              <span className="font-medium" style={{ color: statusColor }}>
+                {statusLabel}
+              </span>
+            </span>
+            <span className="text-gray-400 text-xs">Created: {createdDate}</span>
           </div>
         </div>
       </div>

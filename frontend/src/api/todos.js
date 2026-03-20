@@ -12,7 +12,8 @@ async function request(url, options = {}) {
 
 export const todosApi = {
   getAll: () => request(BASE),
-  create: (title) => request(BASE, { method: 'POST', body: JSON.stringify({ title }) }),
+  create: (title, { description = '', priority = 'moderate', dueDate = null } = {}) =>
+    request(BASE, { method: 'POST', body: JSON.stringify({ title, description, priority, dueDate }) }),
   update: (id, patch) => request(`${BASE}/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }),
   remove: (id) => request(`${BASE}/${id}`, { method: 'DELETE' }),
 };

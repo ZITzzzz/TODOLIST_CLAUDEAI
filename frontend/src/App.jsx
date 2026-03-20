@@ -5,11 +5,14 @@ import Navbar from './components/Navbar.jsx';
 import TodoSection from './components/TodoSection.jsx';
 import StatusSection from './components/StatusSection.jsx';
 import CompletedSection from './components/CompletedSection.jsx';
+import AddTaskModal from './components/AddTaskModal.jsx';
 import MyTaskPage from './pages/MyTaskPage.jsx';
 import VitalTaskPage from './pages/VitalTaskPage.jsx';
+import CategoriesPage from './pages/CategoriesPage.jsx';
 
 export default function App() {
   const [activePage, setActivePage] = useState('dashboard');
+  const [showAddModal, setShowAddModal] = useState(false);
   const { todos, loading, error, addTodo, toggleTodo, deleteTodo } = useTodos();
 
   const pendingTodos = todos.filter((t) => !t.completed);
@@ -28,21 +31,20 @@ export default function App() {
     }
 
     if (activePage === 'vital') {
-      return (
-        <VitalTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
-      );
+      return <VitalTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />;
     }
 
     if (activePage === 'mytask') {
-      return (
-        <MyTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
-      );
+      return <MyTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />;
     }
 
-    // Default: dashboard
+    if (activePage === 'categories') {
+      return <CategoriesPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />;
+    }
+
+    // Dashboard
     return (
       <>
-        {/* Welcome header */}
         <div className="mb-5 flex items-center gap-2 shrink-0">
           <h2 className="text-4xl font-medium text-gray-800">
             Welcome back <span className="inline-block">👋</span>
@@ -55,6 +57,7 @@ export default function App() {
             onAdd={addTodo}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
+            onOpenModal={() => setShowAddModal(true)}
           />
           <div className="flex flex-col gap-5 min-h-0">
             <StatusSection
@@ -89,6 +92,14 @@ export default function App() {
           {renderContent()}
         </div>
       </div>
+
+      {/* Add Task Modal */}
+      {showAddModal && (
+        <AddTaskModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={addTodo}
+        />
+      )}
     </div>
   );
 }
