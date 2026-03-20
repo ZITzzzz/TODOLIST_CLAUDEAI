@@ -1,33 +1,68 @@
 import { useTodos } from './hooks/useTodos.js';
-import { TodoForm } from './components/TodoForm.jsx';
-import { TodoList } from './components/TodoList.jsx';
+import Sidebar from './components/Sidebar.jsx';
+import Navbar from './components/Navbar.jsx';
+import TodoSection from './components/TodoSection.jsx';
+import StatusSection from './components/StatusSection.jsx';
+import CompletedSection from './components/CompletedSection.jsx';
 
 export default function App() {
   const { todos, loading, error, addTodo, toggleTodo, deleteTodo } = useTodos();
 
-  const remaining = todos.filter((t) => !t.completed).length;
+  const pendingTodos = todos.filter((t) => !t.completed);
+  const completedTodos = todos.filter((t) => t.completed);
+  const total = todos.length;
+  const completedPct = total > 0 ? Math.round((completedTodos.length / total) * 100) : 0;
+  const pendingPct = total > 0 ? 100 - completedPct : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-16 px-4">
-      <div className="w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">Todo App</h1>
-        <p className="text-sm text-gray-500 mb-6">
-          {loading ? 'Loading...' : `${remaining} task${remaining !== 1 ? 's' : ''} remaining`}
-        </p>
+    <div className="flex h-screen overflow-hidden bg-[#f5f8ff]">
+      <Sidebar />
 
-        <TodoForm onAdd={addTodo} />
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <Navbar />
 
-        {error && (
-          <p className="text-red-500 text-sm mb-4 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
-            {error}
-          </p>
-        )}
+        <div className="flex-1 overflow-hidden p-6 flex flex-col">
+          {/* Welcome header */}
+          <div className="mb-5 flex items-center gap-2">
+            <h2 className="text-4xl font-medium text-gray-800">
+              Welcome back <span className="inline-block">👋</span>
+            </h2>
+          </div>
 
-        {loading ? (
-          <p className="text-center text-gray-400 py-8">Loading todos...</p>
-        ) : (
-          <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
-        )}
+          {error && (
+            <div className="mb-4 text-red-600 bg-red-50 border border-red-200 rounded-xl p-3 text-sm shrink-0">
+              {error}
+            </div>
+          )}
+
+          {/* Main grid */}
+          {loading && todos.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+              Loading...
+            </div>
+          ) : (
+            <div className="flex-1 grid grid-cols-2 gap-5 min-h-0">
+              <TodoSection
+                todos={pendingTodos}
+                onAdd={addTodo}
+                onToggle={toggleTodo}
+                onDelete={deleteTodo}
+              />
+              <div className="flex flex-col gap-5 min-h-0">
+                <StatusSection
+                  completedPct={completedPct}
+                  pendingPct={pendingPct}
+                  total={total}
+                />
+                <CompletedSection
+                  todos={completedTodos}
+                  onToggle={toggleTodo}
+                  onDelete={deleteTodo}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
