@@ -1,12 +1,23 @@
-export default function Navbar() {
+const pageTitles = {
+  dashboard: { prefix: 'Dash', suffix: 'board' },
+  vital:     { prefix: 'Vital', suffix: ' Task' },
+  mytask:    { prefix: 'My', suffix: ' Task' },
+  categories:{ prefix: 'Task', suffix: ' Categories' },
+  settings:  { prefix: 'Set', suffix: 'tings' },
+  help:      { prefix: 'He', suffix: 'lp' },
+};
+
+export default function Navbar({ activePage }) {
   const today = new Date();
   const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
   const dateStr = today.toLocaleDateString('en-GB');
+  const title = pageTitles[activePage] || pageTitles.dashboard;
 
   return (
     <header className="h-[80px] bg-white shadow-sm flex items-center px-8 gap-4 shrink-0">
       <h1 className="text-2xl font-bold min-w-fit">
-        <span className="text-[#ff6767]">Dash</span>board
+        <span className="text-[#ff6767]">{title.prefix}</span>
+        {title.suffix}
       </h1>
 
       {/* Search bar */}
@@ -18,7 +29,7 @@ export default function Navbar() {
             className="flex-1 bg-transparent text-base font-semibold text-gray-400 placeholder-gray-400 outline-none"
           />
           <button className="bg-[#ff6767] rounded-lg p-1.5 text-white shrink-0">
-            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5">
               <circle cx="8" cy="8" r="6" />
               <path d="m14 14 4 4" strokeLinecap="round" />
             </svg>
