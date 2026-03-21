@@ -62,7 +62,7 @@ function TaskListCard({ todo, isSelected, onClick, onDelete }) {
   );
 }
 
-export default function MyTaskPage({ todos, onToggle, onDelete }) {
+export default function MyTaskPage({ todos, onToggle, onEdit, onUploadImage, onDelete }) {
   const [selectedId, setSelectedId] = useState(null);
 
   const selectedTodo = todos.find((t) => t._id === selectedId) || null;
@@ -104,6 +104,8 @@ export default function MyTaskPage({ todos, onToggle, onDelete }) {
       <TaskDetailPanel
         todo={selectedTodo}
         onDelete={() => selectedTodo && handleDelete(selectedTodo._id)}
+        onEdit={onEdit}
+        onUploadImage={onUploadImage}
       />
     </div>
   );

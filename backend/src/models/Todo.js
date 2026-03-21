@@ -25,6 +25,10 @@ const todoSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    imageUrl: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

@@ -62,7 +62,7 @@ function TaskListCard({ todo, isSelected, onClick, onDelete }) {
   );
 }
 
-export default function VitalTaskPage({ todos, onToggle, onDelete }) {
+export default function VitalTaskPage({ todos, onToggle, onEdit, onUploadImage, onDelete }) {
   const [selectedId, setSelectedId] = useState(null);
 
   // Vital = incomplete tasks (not yet done)
@@ -106,6 +106,8 @@ export default function VitalTaskPage({ todos, onToggle, onDelete }) {
       <TaskDetailPanel
         todo={selectedTodo}
         onDelete={() => selectedTodo && handleDelete(selectedTodo._id)}
+        onEdit={onEdit}
+        onUploadImage={onUploadImage}
       />
     </div>
   );

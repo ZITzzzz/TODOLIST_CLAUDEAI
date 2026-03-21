@@ -36,6 +36,30 @@ export async function updateTodo(req, res, next) {
   }
 }
 
+export async function uploadTodoImage(req, res, next) {
+  try {
+    if (!req.file) {
+      const err = new Error('No file uploaded');
+      err.status = 400;
+      return next(err);
+    }
+    const imageUrl = `/uploads/${req.file.filename}`;
+    const todo = await Todo.findByIdAndUpdate(
+      req.params.id,
+      { imageUrl },
+      { new: true }
+    );
+    if (!todo) {
+      const err = new Error('Todo not found');
+      err.status = 404;
+      return next(err);
+    }
+    res.json({ data: todo, error: null, message: 'Image uploaded' });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function deleteTodo(req, res, next) {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id);

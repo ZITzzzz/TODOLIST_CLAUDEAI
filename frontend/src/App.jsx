@@ -13,7 +13,7 @@ import CategoriesPage from './pages/CategoriesPage.jsx';
 export default function App() {
   const [activePage, setActivePage] = useState('dashboard');
   const [showAddModal, setShowAddModal] = useState(false);
-  const { todos, loading, error, addTodo, toggleTodo, deleteTodo } = useTodos();
+  const { todos, loading, error, addTodo, toggleTodo, editTodo, uploadImage, deleteTodo } = useTodos();
 
   const pendingTodos = todos.filter((t) => !t.completed);
   const completedTodos = todos.filter((t) => t.completed);
@@ -31,11 +31,11 @@ export default function App() {
     }
 
     if (activePage === 'vital') {
-      return <VitalTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />;
+      return <VitalTaskPage todos={todos} onToggle={toggleTodo} onEdit={editTodo} onUploadImage={uploadImage} onDelete={deleteTodo} />;
     }
 
     if (activePage === 'mytask') {
-      return <MyTaskPage todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />;
+      return <MyTaskPage todos={todos} onToggle={toggleTodo} onEdit={editTodo} onUploadImage={uploadImage} onDelete={deleteTodo} />;
     }
 
     if (activePage === 'categories') {

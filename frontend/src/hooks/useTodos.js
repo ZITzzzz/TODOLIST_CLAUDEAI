@@ -32,10 +32,20 @@ export function useTodos() {
     setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
   }
 
+  async function editTodo(id, patch) {
+    const updated = await todosApi.update(id, patch);
+    setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
+  }
+
+  async function uploadImage(id, file) {
+    const updated = await todosApi.uploadImage(id, file);
+    setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
+  }
+
   async function deleteTodo(id) {
     await todosApi.remove(id);
     setTodos((prev) => prev.filter((t) => t._id !== id));
   }
 
-  return { todos, loading, error, addTodo, toggleTodo, deleteTodo };
+  return { todos, loading, error, addTodo, toggleTodo, editTodo, uploadImage, deleteTodo };
 }
