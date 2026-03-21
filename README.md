@@ -9,11 +9,14 @@ A full-stack Todo List web application built with Node.js, Express, MongoDB, Rea
 ## Features
 
 - Add, complete, and delete todos
+- **Edit tasks** — update title, date, priority, and description via modal
+- **Image upload** — attach an image to any task (drag & drop or browse, max 5MB)
 - Dashboard layout with sidebar navigation
 - Task Status charts (Completed / Remaining) using animated SVG donut rings
 - Separate To-Do and Completed Task panels
+- My Task and Vital Task pages with task detail panel
+- Task Categories page
 - Live date and day display in the navbar
-- Responsive two-column layout
 
 ---
 
@@ -63,12 +66,13 @@ npm run dev
 
 All endpoints are under `/api/todos`.
 
-| Method | Path             | Description                              |
-|--------|------------------|------------------------------------------|
-| GET    | `/api/todos`     | List all todos (newest first)            |
-| POST   | `/api/todos`     | Create todo — body: `{ title }`          |
-| PATCH  | `/api/todos/:id` | Update todo — body: `{ title?, completed? }` |
-| DELETE | `/api/todos/:id` | Delete todo                              |
+| Method | Path                    | Description                                                       |
+|--------|-------------------------|-------------------------------------------------------------------|
+| GET    | `/api/todos`            | List all todos (newest first)                                     |
+| POST   | `/api/todos`            | Create todo — body: `{ title, description?, priority?, dueDate? }`|
+| PATCH  | `/api/todos/:id`        | Update todo fields — any model field                              |
+| PATCH  | `/api/todos/:id/image`  | Upload task image — multipart `image` field (max 5MB)            |
+| DELETE | `/api/todos/:id`        | Delete todo                                                       |
 
 ### Response Format
 
@@ -86,20 +90,24 @@ All endpoints are under `/api/todos`.
 │       ├── index.js          # Express entry point
 │       ├── routes/           # API routes
 │       ├── controllers/      # Route handlers
-│       ├── models/           # Mongoose models
-│       └── middleware/       # Error handler
+│       ├── models/           # Mongoose models (Todo)
+│       └── middleware/       # Error handler, upload (multer)
+│   └── uploads/              # Uploaded task images (served as static)
 ├── frontend/
 │   └── src/
-│       ├── App.jsx           # Dashboard layout
-│       ├── api/todos.js      # API client
-│       ├── hooks/useTodos.js # State management hook
+│       ├── App.jsx           # Root layout + client-side routing
+│       ├── api/todos.js      # API client (only file that calls fetch)
+│       ├── hooks/useTodos.js # Global todo state hook
+│       ├── pages/
+│       │   ├── MyTaskPage.jsx
+│       │   ├── VitalTaskPage.jsx
+│       │   └── CategoriesPage.jsx
 │       └── components/
-│           ├── Sidebar.jsx
-│           ├── Navbar.jsx
-│           ├── TodoSection.jsx
-│           ├── TaskCard.jsx
-│           ├── StatusSection.jsx
-│           ├── StatusChart.jsx
+│           ├── Sidebar.jsx / Navbar.jsx
+│           ├── AddTaskModal.jsx / EditTaskModal.jsx
+│           ├── TaskDetailPanel.jsx
+│           ├── TaskCard.jsx / TodoSection.jsx
+│           ├── StatusSection.jsx / StatusChart.jsx
 │           └── CompletedSection.jsx
 └── package.json              # Root scripts
 ```
