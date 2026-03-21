@@ -2,7 +2,14 @@ import { Todo } from '../models/Todo.js';
 
 export async function getTodos(req, res, next) {
   try {
-    const todos = await Todo.find().sort({ createdAt: -1 });
+    const { q } = req.query;
+    const filter = q
+      ? { $or: [
+          { title: { $regex: q, $options: 'i' } },
+          { description: { $regex: q, $options: 'i' } },
+        ] }
+      : {};
+    const todos = await Todo.find(filter).sort({ createdAt: -1 });
     res.json({ data: todos, error: null, message: 'OK' });
   } catch (err) {
     next(err);

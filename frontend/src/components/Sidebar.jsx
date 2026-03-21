@@ -68,18 +68,22 @@ const navItems = [
   },
 ];
 
-export default function Sidebar({ activePage, onNavigate }) {
+export default function Sidebar({ activePage, onNavigate, settings = {} }) {
+  const name    = settings.name  || 'User';
+  const email   = settings.email || 'user@example.com';
+  const initial = name.charAt(0).toUpperCase();
+
   return (
     <div className="w-[280px] bg-[#ff6767] flex flex-col shadow-lg shrink-0">
       {/* User profile */}
       <div className="pt-14 pb-4 px-6 flex flex-col items-center">
         <div className="w-20 h-20 rounded-full overflow-hidden mb-3 ring-4 ring-white/30">
           <div className="w-full h-full bg-gradient-to-br from-orange-200 to-amber-400 flex items-center justify-center text-white text-2xl font-bold select-none">
-            U
+            {initial}
           </div>
         </div>
-        <p className="text-white font-semibold text-lg">User Name</p>
-        <p className="text-white/70 text-base mt-0.5">user@example.com</p>
+        <p className="text-white font-semibold text-lg">{name}</p>
+        <p className="text-white/70 text-base mt-0.5">{email}</p>
       </div>
 
       {/* Nav items */}
